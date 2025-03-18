@@ -133,7 +133,7 @@ app.get("/profile", (req, res) => {
     res.render("abonnement");
   });
   // Afficher la page de tableau de bord
-  res.render("profile", { title: "Tableau de bord - VipJob.tn", user: req.session.user });
+  res.render("user/profile", { title: "Tableau de bord - VipJob.tn", user: req.session.user });
 });
 
 // Route pour gérer la déconnexion
@@ -147,6 +147,8 @@ app.get("/logout", (req, res) => {
     res.redirect("/login"); // Rediriger vers la page de connexion
   });
 });
+
+
 
 // Route pour gérer l'inscription
 app.post("/signup", (req, res) => {
@@ -280,21 +282,21 @@ app.post("/verify", (req, res) => {
 
 // Route pour la page d'accueil
 app.get("/", (req, res) => {
-  res.render("home", { title: "Accueil - VipJob.tn" });
+  res.render("user/home", { title: "Accueil - VipJob.tn" });
 });
 
 // Route pour la page d'inscription
 app.get("/signup", (req, res) => {
-  res.render("signup", { title: "Inscription - VipJob.tn" });
+  res.render("user/signup", { title: "Inscription - VipJob.tn" });
 });
 
 // Route pour la page de vérification
 app.get('/verify', (req, res) => {
-  res.render('verify', { title: "Vérification - VipJob.tn" });
+  res.render('user/verify', { title: "Vérification - VipJob.tn" });
 });
 // Route pour la page des offres
 app.get("/offre", (req, res) => {
-  res.render("offre", { title: "Offres - VipJob.tn" });
+  res.render("user/offre", { title: "Offres - VipJob.tn" });
 });
 app.get("/users", (req, res) => {
   res.render("admin/users", { title: "Offres - VipJob.tn" });
@@ -306,22 +308,26 @@ app.get("/offres", (req, res) => {
 
 
 app.get("/index", (req, res) => {
-  res.render("index", { title: "Index - VipJob.tn" });
+  res.render("user/index", { title: "Index - VipJob.tn" });
 });
 
 // Route pour la page de profil
 app.get("/profile", (req, res) => {
-  res.render("profile", { title: "Profil - VipJob.tn" });
+  res.render("user/profile", { title: "Profil - VipJob.tn" });
+});
+
+app.get('/abonnement', (req, res) => {
+  res.render("user/abonnement",{ title: "abonnement - VipJob.tn" });
 });
 
 // Route pour la page de connexion
 app.get("/login", (req, res) => {
-  res.render("login", { title: "Connexion - VipJob.tn" });
+  res.render("user/login", { title: "Connexion - VipJob.tn" });
 });
 
 // Route pour la page "Mot de passe oublié"
 app.get("/forgot-password", (req, res) => {
-  res.render("forgot-password", { title: "Mot de passe oublié - VipJob.tn" });
+  res.render("user/forgot-password", { title: "Mot de passe oublié - VipJob.tn" });
 });
 
 
@@ -334,7 +340,7 @@ app.post("/forgot-password", (req, res) => {
 
   // Route pour la page des offres
 app.get("/reset-password", (req, res) => {
-  res.render("reset-password", { title: " - VipJob.tn" });
+  res.render("user/reset-password", { title: " - VipJob.tn" });
 });
 
   // Vérifier si l'e-mail existe dans la base de données

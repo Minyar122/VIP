@@ -10,67 +10,6 @@
   
   <!-- Alpine.js pour les interactions -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            blue: {
-              50: '#EFF6FF',
-              100: '#DBEAFE',
-              200: '#BFDBFE',
-              300: '#93C5FD',
-              400: '#60A5FA',
-              500: '#3B82F6',
-              600: '#2563EB',
-              700: '#1D4ED8',
-              800: '#1E40AF',
-              900: '#1E3A8A',
-              950: '#172554',
-            },
-            primary: '#1A1F2C',
-            secondary: '#F1F0FB',
-            accent: '#2563EB',
-            border: '#e2e8f0',
-            muted: {
-              DEFAULT: '#F1F0FB',
-              foreground: '#64748b'
-            }
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.5s ease-out',
-            'slide-up': 'slideUp 0.5s ease-out',
-            'pulse-slow': 'pulseSlow 3s ease-in-out infinite',
-            'float': 'float 6s ease-in-out infinite'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' }
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(20px)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' }
-            },
-            pulseSlow: {
-              '0%, 100%': { opacity: '1' },
-              '50%': { opacity: '0.8' }
-            },
-            float: {
-              '0%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-20px)' },
-              '100%': { transform: 'translateY(0px)' }
-            }
-          },
-          transitionDuration: {
-            '2000': '2000ms',
-          }
-        }
-      }
-    }
-  </script>
-  
   <style>
     /* Utilitaires personnalisés */
     .glass-card {
@@ -121,104 +60,9 @@
     <div class="animate-pulse-slow animation-delay-2000 absolute bottom-20 -right-32 w-96 h-96 bg-gray-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
   </div>
   
-  <!-- Navigation Bar -->
-  <header
-    x-data="{ scrolled: false, mobileMenuOpen: false }"
-    x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 10 })"
-    :class="scrolled ? 'glass-card py-2' : 'bg-transparent py-4'"
-    class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
-  >
-    <div class="container mx-auto flex justify-between items-center px-4">
-      <a href="/" class="flex items-center gap-2 text-xl font-medium animate-fade-in"
-        @click="mobileMenuOpen = false">
-<div class="flex items-center space-x-2">
-<img src="assets/img/job.png" alt="Logo" class="h-12 w-12 object-cover align-middle">
-    <span class="text-3xl font-bold tracking-wide">VIPJOB.TN</span>
-</div> 
-
-      <!-- Desktop Menu -->
-      <nav class="hidden md:flex items-center gap-8 animate-fade-in">
-        <a href="/offre" class="flex items-center py-2 transition-all duration-300 hover-lift text-primary/70 hover:text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          Offres de travail
-        </a>
-        <a href="/abonnement" class="flex items-center py-2 transition-all duration-300 hover-lift text-primary/70 hover:text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2" ry="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          Abonnement
-        </a>
-        <a href="/profile" class="flex items-center py-2 transition-all duration-300 hover-lift text-primary/70 hover:text-primary">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-  </svg>
-  Profile
-</a>
-        
-        <!-- Notification Icon -->
-        <button class="relative p-1 rounded-full hover:bg-secondary transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-          <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-        </button>
-        
-        <!-- Avatar / Profile Picture -->
-        <div class="h-9 w-9 rounded-full overflow-hidden hover-lift">
-          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" alt="Photo de profil" class="h-full w-full object-cover" />
-        </div>
-      </nav>
-
-      <!-- Mobile Menu Button -->
-      <button
-        class="md:hidden text-primary p-2 rounded-md"
-        @click="mobileMenuOpen = !mobileMenuOpen"
-        aria-label="Toggle menu"
-      >
-        <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-        <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div
-      x-show="mobileMenuOpen"
-      x-transition:enter="transition-transform duration-300 ease-in-out"
-      x-transition:enter-start="translate-x-full"
-      x-transition:enter-end="translate-x-0"
-      x-transition:leave="transition-transform duration-300 ease-in-out"
-      x-transition:leave-start="translate-x-0"
-      x-transition:leave-end="translate-x-full"
-      class="fixed inset-0 z-40 glass-card flex flex-col pt-20 pb-6 px-6 md:hidden"
-    >
-      <nav class="flex flex-col gap-6 items-center">
-        <a href="/jobs" @click="mobileMenuOpen = false" class="flex items-center py-2 transition-all duration-300 text-primary/70 hover:text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          Offres de travail
-        </a>
-        <a href="/subscription" @click="mobileMenuOpen = false" class="flex items-center py-2 transition-all duration-300 text-primary/70 hover:text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2" ry="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          Abonnement
-        </a>
-        <a href="/profile" class="flex items-center py-2 transition-all duration-300 hover-lift text-primary/70 hover:text-primary">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-  </svg>
-  Profile
-</a>
-
-        
-        <div class="flex items-center gap-4 mt-4">
-          <!-- Mobile Notification Icon -->
-          <button class="relative p-2 rounded-full hover:bg-secondary transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-            <span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500"></span>
-          </button>
-          
-          <!-- Mobile Avatar / Profile Picture -->
-          <div class="h-10 w-10 rounded-full overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" alt="Photo de profil" class="h-full w-full object-cover" />
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+ 
+   <!-- Header -->
+      {{> header1 }} <!-- Include header partial -->
 
   <!-- Main Content - Profile Form -->
   <main class="flex-grow pt-28 pb-16 px-6 relative z-10">
@@ -366,9 +210,6 @@
                   </button>
                 </div>
               </div>
-             
-              
-
               <!-- Nouveau champ Gouvernorat -->
               <div class="space-y-3 animate-fade-in animation-delay-1000">
                 <label for="governorate" class="flex items-center text-sm font-medium">
@@ -507,6 +348,20 @@
     </section>
   </main>
 <script>
+  const button = document.getElementById('profileButton');
+    const menu = document.getElementById('menu');
+
+    button.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+
+    // Fermer le menu si on clique ailleurs
+    document.addEventListener('click', (event) => {
+      if (!button.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+
         function updateProfilePicture() {
   const fileInput = document.getElementById('upload_profile');
   const profileImg = document.getElementById('profile-img'); // Image principale
@@ -693,72 +548,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
   <!-- Footer -->
-  <footer class="bg-gray-50/80 border-t border-gray-100 py-16 relative z-10">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-        <div class="col-span-1 md:col-span-2">
-          <a href="/" class="inline-block mb-4">
-            <span class="text-2xl font-medium tracking-tight">VipJob<span class="text-gray-800">.tn</span></span>
-          </a>
-          <p class="text-muted-foreground mb-6 max-w-md">
-            VipJob.tn est une plateforme d'offres d'emploi qui aide les chercheurs d'emploi à trouver des opportunités adaptées à leur profil de manière simple et rapide.
-          </p>
-          <div class="flex items-center gap-4">
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-800 hover:bg-gray-200 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-800 hover:bg-gray-200 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-800 hover:bg-gray-200 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-gray-800 hover:bg-gray-200 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-          </div>
-        </div>
-        
-        <div>
-          <h3 class="font-medium text-lg mb-4">Liens Rapides</h3>
-          <ul class="space-y-3">
-            <li><a href="/" class="text-muted-foreground hover:text-gray-800 transition-colors">Accueil</a></li>
-            <li><a href="/profile" class="text-muted-foreground hover:text-gray-800 transition-colors">Profil</a></li>
-            <li><a href="/jobs" class="text-muted-foreground hover:text-gray-800 transition-colors">Recherche d'emploi</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-gray-800 transition-colors">Entreprises</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-gray-800 transition-colors">Blog</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 class="font-medium text-lg mb-4">Contact</h3>
-          <ul class="space-y-4">
-            <li class="flex items-start gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-800 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span class="text-muted-foreground">Rue de la Bourse, Les Berges du Lac, Tunis</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              <a href="mailto:contact@vipjob.tn" class="text-muted-foreground hover:text-gray-800 transition-colors">contact@vipjob.tn</a>
-            </li>
-            <li class="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-              <a href="tel:+21671000000" class="text-muted-foreground hover:text-gray-800 transition-colors">+216 71 000 000</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="border-t border-blue-100 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-muted-foreground text-sm">
-          © 2023 VipJob.tn. Tous droits réservés.
-        </p>
-        <div class="flex gap-6">
-          <a href="#" class="text-sm text-muted-foreground hover:text-gray-800 transition-colors">Conditions d'utilisation</a>
-          <a href="#" class="text-sm text-muted-foreground hover:text-gray-800 transition-colors">Politique de confidentialité</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  {{>footer }} 
 </body>
 </html>
