@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const path = require("path");
 const session = require("express-session"); // Pour gérer les sessions
 const { engine } = require("express-handlebars");
+const scrapeTanitJobs = require("./scrape-tanitjobs");
 
 const jsPDF = require('jspdf');
 const { autoTable } = require('jspdf-autotable');
@@ -305,7 +306,12 @@ app.get("/offres", (req, res) => {
   res.render("admin/offres", { title: "Offres - VipJob.tn" });
 });
 
-
+app.get("/gestion_sms", (req, res) => {
+  res.render("admin/gestion_sms", { title: "gestion_sms- VipJob.tn" });
+});
+app.get("/sms", (req, res) => {
+  res.render("admin/sms", { title: "sms - VipJob.tn" });
+});
 
 app.get("/index", (req, res) => {
   res.render("user/index", { title: "Index - VipJob.tn" });
@@ -320,6 +326,9 @@ app.get('/abonnement', (req, res) => {
   res.render("user/abonnement",{ title: "abonnement - VipJob.tn" });
 });
 
+app.get('/contact', (req, res) => {
+  res.render("user/contact",{ title: "contact - VipJob.tn" });
+});
 // Route pour la page de connexion
 app.get("/login", (req, res) => {
   res.render("user/login", { title: "Connexion - VipJob.tn" });
@@ -329,11 +338,6 @@ app.get("/login", (req, res) => {
 app.get("/forgot-password", (req, res) => {
   res.render("user/forgot-password", { title: "Mot de passe oublié - VipJob.tn" });
 });
-
-
-
-
-
 // Route pour traiter la soumission du formulaire "Mot de passe oublié"
 app.post("/forgot-password", (req, res) => {
   const { email } = req.body;
@@ -789,16 +793,15 @@ app.put('/update-user', (req, res) => {
 });
 
 
-
 app.post('/create-offre', (req, res) => {
-  const { titre, description, date_creation, date_fin, domaine } = req.body;
+  const { titre, description, date_creation, date_fin, domaine, type_contrat, localisation, nb_candidat,status } = req.body;
 
-  // SQL query to add the offer
+  // SQL query to insert the new offer
   const sql = `
-    INSERT INTO offreemploi (titre, description, date_creation, date_fin, domaine)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO offreemploi (titre, description, date_creation, date_fin, domaine, type_contrat, localisation, nb_candidat,status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
   `;
-  const values = [titre, description, date_creation, date_fin, domaine];
+  const values = [titre, description, date_creation, date_fin, domaine, type_contrat, localisation, nb_candidat, status];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -814,6 +817,7 @@ app.post('/create-offre', (req, res) => {
   });
 });
 
+
 app.get('/display-offres', (req, res) => {
   const query = "SELECT * FROM offreemploi";
 
@@ -826,29 +830,70 @@ app.get('/display-offres', (req, res) => {
     res.status(200).json({ success: true, offres: results });
   });
 });
-app.put('/update-offre', (req, res) => {
-  const { id, titre, description, date_creation, date_fin, domaine } = req.body;
 
-  if (!id || !titre || !description || !date_creation || !date_fin || !domaine) {
-    return res.status(400).json({ success: false, message: "Tous les champs sont obligatoires." });
+app.get('/search-offre', (req, res) => {
+  let query = "SELECT * FROM offreemploi WHERE 1 = 1";
+  const params = [];
+
+  if (req.query.titre) {
+    query += " AND (titre LIKE ?)";
+    params.push(`%${req.query.titre}%`);
+  }
+
+  if (req.query.domaine) {
+    query += " AND domaine = ?";
+    params.push(req.query.domaine);
+  }
+
+  if (req.query.type_contrat) {
+    query += " AND type_contrat = ?";
+    params.push(req.query.type_contrat);
+  }
+
+  if (req.query.localisation) {  // Fixed incorrect parameter check
+    query += " AND localisation = ?";
+    params.push(req.query.localisation);
+  }
+
+  db.query(query, params, (err, results) => {
+    if (err) {
+      console.error("Erreur lors de la récupération des offres:", err);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+    res.status(200).json({ success: true, offres: results });
+  });
+});
+
+app.put('/update-offre/:id', (req, res) => {
+  const id = req.params.id;  // Correct access to the id parameter
+  const { titre, description, date_creation, date_fin, domaine, type_contrat, localisation, nb_candidat } = req.body;
+
+  if (!id || !titre || !description || !date_creation || !date_fin || !domaine || !type_contrat || !localisation || !nb_candidat) {
+      return res.status(400).json({ success: false, message: "Tous les champs sont obligatoires." });
   }
 
   const query = `
     UPDATE offreemploi
-    SET titre = ?, description = ?, date_creation = ?, date_fin = ?, domaine = ?
+    SET titre = ?, description = ?, date_creation = ?, date_fin = ?, domaine = ?, type_contrat = ?, localisation = ?, nb_candidat = ?
     WHERE id = ?
   `;
-  const values = [titre, description, date_creation, date_fin, domaine, id];
+  const values = [titre, description, date_creation, date_fin, domaine, type_contrat, localisation, nb_candidat, id];
 
   db.query(query, values, (err, results) => {
-    if (err) {
-      console.error("Erreur lors de la mise à jour de l'offre:", err);
-      return res.status(500).json({ success: false, message: "Erreur lors de la mise à jour de l'offre." });
-    }
+      if (err) {
+          console.error("Erreur lors de la mise à jour de l'offre:", err);
+          return res.status(500).json({ success: false, message: "Erreur lors de la mise à jour de l'offre." });
+      }
 
-    res.status(200).json({ success: true, message: "Offre mise à jour avec succès." });
+      if (results.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: "Aucune offre trouvée avec cet ID." });
+      }
+
+      res.status(200).json({ success: true, message: "Offre mise à jour avec succès." });
   });
 });
+
+
 app.delete('/delete-offre/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -871,6 +916,19 @@ app.delete('/delete-offre/:id', async (req, res) => {
     res.status(200).json({ success: true, message: "Offre supprimée avec succès." });
   });
 });
+
+
+
+app.get("/jobs", async (req, res) => {
+  try {
+    const jobs = await scrapeTanitJobs();
+    res.json(jobs); // Send the JSON response
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+
 
 // Démarrer le serveur
 app.listen(port, () => {
